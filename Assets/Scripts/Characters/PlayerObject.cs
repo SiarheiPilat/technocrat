@@ -9,6 +9,7 @@
 
 using BlitCore;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 /// <summary>
 /// The main player component.
@@ -16,6 +17,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerObject : MovingAnimatorObject 
 {
+
+	public Joystick Joystick;
+
 	struct PlayerInput {
 		public float x;
 		public float y;
@@ -75,20 +79,26 @@ public class PlayerObject : MovingAnimatorObject
 
 		if (input != null) {
 			// Get all player input
-			#if UNITY_EDITOR || UNITY_STANDALONE
-			playerInput.x = input.GetHorizontal ();
-			playerInput.y = input.GetVertical ();
-			#else
-			((Mobile)input).ReadMovement ();
-			playerInput.x = input.GetHorizontal ();
-			playerInput.y = input.GetVertical ();
-			#endif
+			//#if UNITY_EDITOR || UNITY_STANDALONE
+			//playerInput.x = input.GetHorizontal ();
+			//playerInput.y = input.GetVertical ();
+			//#else
+			//((Mobile)input).ReadMovement ();
+			//playerInput.x = input.GetHorizontal ();
+			//playerInput.y = input.GetVertical ();
+			//#endif
+
+			playerInput.x = input.GetHorizontal();
+			playerInput.y = input.GetVertical();
+
 			playerInput.action = input.GetButton ("Y");
 			playerInput.slash = input.GetButton ("X");
 			playerInput.aim = input.GetButton ("Aim");
 			playerInput.dash = input.GetButton ("Dash");
 			playerInput.fire = input.GetButton ("Fire");
 		}
+
+	
 	}
 
 	/// <summary>
@@ -146,9 +156,12 @@ public class PlayerObject : MovingAnimatorObject
 					}
 				}
 			}
-				
+
 			// Make sure we normalize movement
-			var move = new Vector2 (playerInput.x, playerInput.y);
+			//var move = new Vector2 (playerInput.x, playerInput.y);
+
+			var move = new Vector2(Joystick.x, Joystick.y);
+
 			if (move.magnitude > 1)
 				move.Normalize ();
 

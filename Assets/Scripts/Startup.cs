@@ -13,6 +13,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Startup : MonoBehaviour, IStartup 
 {
+	public bool ShowCursor;
+
 	#if UNITY_EDITOR
 	/// <summary>
 	/// For the editor.
@@ -27,7 +29,7 @@ public class Startup : MonoBehaviour, IStartup
 	/// Initializes the game.
 	/// </summary>
 	public void Init() {
-		Cursor.visible = false;
+		Cursor.visible = ShowCursor;
 
 		// Default input should be keyboard
 		BlitEngine.Instance.Input = new Keyboard ();
